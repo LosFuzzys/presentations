@@ -1,0 +1,3 @@
+[submodule "linuxtage-2016/images/zippy"]
+	path = linuxtage-2016/images/zippy
+	url = git@github.com:LosFuzzys/zippy.git
