@@ -1,0 +1,58 @@
+% set up pdf options
+\pdfminorversion=5
+\pdfobjcompresslevel=3
+\pdfcompresslevel=9
+
+\documentclass[english,xcolor={x11names,svgnames,dvipsnames}]{beamer}
+
+% nicer fonts
+\usepackage[T1]{fontenc}
+% utf8 input encoding
+\usepackage[utf8]{inputenc}
+% use babel package for language stuff
+\usepackage{babel}
+% include pictures
+\usepackage{graphicx}
+\usepackage{tabularx}
+
+%%%%% beamer theme  %%%%%
+
+\usetheme{default}
+\usecolortheme{seahorse}
+\useinnertheme{rectangles}
+\beamertemplatenavigationsymbolsempty
+
+%%%%% custom packages  %%%%%
+
+%\usepackage{tikz}
+%\usetikzlibrary{shapes,arrows,positioning,matrix,chains,backgrounds,fit}
+
+\usepackage{todonotes}
+
+%\newcommand{\todoinl}{1}{ \todo[inline]{#1} }
+
+%%%%% stuff  %%%%%
+
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+
+% \makeatother % makes @ to normal letter
+
+
+%%%%% title etc.  %%%%%
+
+\author{\href{https://twitter.com/stefan2904}{@stefan2904} \and \href{https://twitter.com/f0rki}{@f0rki}}
+\title{A CTF Hackers Toolbox}
+\subtitle{}
+\date{2016-0X-XX}
+
+\begin{document}
+
+\begin{frame}[t,plain]
+    \titlepage
+\end{frame}
+
+\input{content}
+
+\end{document}
+
