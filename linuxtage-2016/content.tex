@@ -81,6 +81,9 @@
     \item \textbf{It's fun!}
     \item Gain experience in infosec
     \item Challenges modeled after real-world problems
+      \begin{itemize}
+        \item Sometimes real-world bugs modeled after CTF bugs?
+      \end{itemize}
   \end{itemize}
 \end{frame}
 
@@ -168,11 +171,27 @@ URL = 'http://ctf.example.com'
 r = s.post(URL + '/login',
            data={'user': 'fuzzy', 'pass': '1234'})
 # session cookie automagically used here
-print s.get(URL + '/vuln?x=\'or/**/1=1--x').text
+print s.get(URL + '/vuln', params={'x': 'or/**/1=1--x'}).text
+# GET 'http://ctf.example.com/vuln?x=or/**/1=1--x
   \end{lstlisting}
 \end{frame}
 
 % pwntools - implement parts of line-based network protocols
+
+\begin{frame}[fragile]
+  {dirty networking -- pwntools/binjitsu}
+
+% TODO: send email or something
+  \begin{lstlisting}[language=python]
+from pwn import *
+r = remote('ctf.example.com', 1337)
+r.recvline()  # ignore
+r.sendline('HELO %p%p%p%p')
+r.recvuntil('250 Hello')
+data = r.recv(2 + 4 * 2)
+r.recvline()
+  \end{lstlisting}
+\end{frame}
 
 % pwntools - build exploits and pwn binaries
 
@@ -181,6 +200,7 @@ print s.get(URL + '/vuln?x=\'or/**/1=1--x').text
 % gdb - pretty horrible
 %peda
 %https://github.com/cyrus-and/gdb-dashboard
+%voltron
 
 % retdec decompiler
 
@@ -206,4 +226,9 @@ print s.get(URL + '/vuln?x=\'or/**/1=1--x').text
     \item Code-reuse between different CTFs
   \end{itemize}
 
+\end{frame}
+
+
+\begin{frame}
+  {}
 \end{frame}
