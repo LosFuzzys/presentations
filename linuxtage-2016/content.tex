@@ -179,6 +179,7 @@
   {Command-Line-Fu is very helpful}
 
   \begin{itemize}
+    \item Standard utils -- \texttt{grep, sed, awk, sort, cut, uniq,} \ldots
     \item Network stuff -- \texttt{nc, socat, dig, nmap}
     \item Query json files -- \texttt{jq}
     \item HTTP -- \texttt{curl}
@@ -191,8 +192,37 @@
 
 
 \begin{frame}
-  \todo[inline]{add command line black-magic example}
+
+
+  \todo[inline]{Some example with socat?}
+
 \end{frame}
+
+
+\begin{frame}[fragile]
+  {Bash Password Guessing}
+
+  \begin{lstlisting}[language=bash]
+for x in A B C D E F G H I J K L \
+  M N O P Q R S T U V W X Y Z \
+  a b c d e f g h i j k l m n \
+  o p q r s t u v w x y z \
+do
+echo "= $x ="
+# count sigaction syscalls
+strace ./stage3.bin "Did_you_l$x$x$x$x$x$x$x$x" 2>&1 \
+  | grep sigaction | wc -l
+done > log
+# get highest count of sigactions and triggering char
+cat log | grep -B 1 \
+  "$(cat log | grep -v = | sort | uniq | tail -n 1)"
+  \end{lstlisting}
+
+\end{frame}
+
+%\begin{frame}
+%  \todo[inline]{add command line black-magic example}
+%\end{frame}
 
 % python requests - automated browsing
 
@@ -220,7 +250,7 @@ print resp.text
 % pwntools - implement parts of line-based network protocols
 
 \begin{frame}[fragile]
-  {dirty networking -- pwntools/binjitsu}
+  {dirty networking -- pwntools}
 
 % TODO: send email or something
   \begin{lstlisting}[language=python]
@@ -248,8 +278,8 @@ r.recvline()
 
 \begin{frame}[fragile]
 
-
   {\Huge A wild binary appears!}
+  \vspace{1em}
 
   \begin{lstlisting}
 $ file ./pwn
@@ -258,28 +288,36 @@ pwn: ELF 32-bit LSB executable, Intel 80386,
   for GNU/Linux 2.6.24,
   not stripped
   \end{lstlisting}
+
 \end{frame}
 
 
 \begin{frame}[fragile]
-  \begin{center}
-    \verb+$ objdump -d pwn | less+
 
-    \includegraphics[width=0.95\textwidth]{./images/objdump.png}
+  \huge
+  \begin{center}
+    \verb+$ objdump -d ./pwn | less+
   \end{center}
 \end{frame}
 
+{\setbeamercolor{background canvas}{bg=black}
+\begin{frame}[fragile]
+  \begin{center}
+    \includegraphics[width=\textwidth]{./images/objdump.png}
+  \end{center}
+\end{frame}
+}
 
 \begin{frame}
-  {radare2 to the rescue}
+  \begin{center}
+    {\Huge \texttt{radare2}}
+  \end{center}
+\end{frame}
+
+{\setbeamercolor{background canvas}{bg=black}
+\begin{frame}
   \begin{center}
     \includegraphics[width=\textwidth]{./images/radare-disas.png}
-  \end{center}
-\end{frame}
-
-\begin{frame}
-  \begin{center}
-    \includegraphics[width=\textwidth]{./images/radare-disas2.png}
   \end{center}
 \end{frame}
 
@@ -290,17 +328,42 @@ pwn: ELF 32-bit LSB executable, Intel 80386,
 \end{frame}
 
 \begin{frame}
-  {radare2 -- reversing tool}
+  \begin{center}
+    \includegraphics[width=\textwidth]{./images/radare-disas2.png}
+  \end{center}
+\end{frame}
+}
+
+\begin{frame}
+
+  \todo[inline]{Add radare afl, izz and stuff}
+\end{frame}
+
+\begin{frame}
+  {radare2 -- reverse engineering toolkit}
 
   \begin{itemize}
+    \item Hex Editor
     \item Disassembler/Assembler
     \item Debugger
-    \item Code emulator
-    \item Hex Editor
+    \item Code emulation
+    \item Binary Diffing
     \item \ldots
   \end{itemize}
 \end{frame}
 
+{\setbeamercolor{background canvas}{bg=red}
+\begin{frame}
+  \begin{center}
+    \includegraphics[height=3em]{./images/r2logo.pdf}\\
+    \Huge\textbf{\textcolor{white}{{%
+      Keep Calm \\
+      And \\
+    Use }\texttt{r2} \\
+    \textsc{From }\texttt{git}}}
+  \end{center}
+\end{frame}
+}
 % gdb - pretty horrible
 
 \begin{frame}
@@ -309,6 +372,8 @@ pwn: ELF 32-bit LSB executable, Intel 80386,
 	\end{center}
 \end{frame}
 
+
+{\setbeamercolor{background canvas}{bg=black}
 \begin{frame}
   \begin{center}
     \includegraphics[width=0.8\textwidth]{./images/gdb-plain.png}
@@ -320,6 +385,7 @@ pwn: ELF 32-bit LSB executable, Intel 80386,
     \includegraphics[width=\textwidth]{./images/gdb-peda.png}
   \end{center}
 \end{frame}
+}
 
 \begin{frame}
   {Debuggers}
@@ -343,12 +409,11 @@ pwn: ELF 32-bit LSB executable, Intel 80386,
 \end{frame}
 
 
-\begin{frame}
-  {QIRA -- ``Timeless Debugging''}
-
-  \todo[inline]{add qira screenshot}
-
-\end{frame}
+% We don't use it so we don't recommend it?
+%\begin{frame}
+%  {QIRA -- ``Timeless Debugging''}
+%  \todo[inline]{add qira screenshot}
+%\end{frame}
 
 
 % pwntools - build exploits and pwn binaries
@@ -356,13 +421,14 @@ pwn: ELF 32-bit LSB executable, Intel 80386,
 \begin{frame}[fragile]
 
   {\Huge Pwning!}
+  \vspace{1em}
 
   \begin{lstlisting}
-$ mkfifo fifo
-$ ./pwn fifo & python -c 'print("A"*4128)' >> fifo
+$ mkfifo ./fifo
+$ ./pwn ./fifo & python -c 'print("A"*4128)' >> ./fifo
 [1] 9391
 The file has been saved successfully
-[1]  + 9391 segmentation fault (core dumped)  ./pwn fifo
+[1]  + 9391 segmentation fault (core dumped)  ./pwn ./fifo
 $ dmesg | tail -n 1
 pwn[9391]: segfault at 41414141 ip 0000000041414141
   sp 00000000ffb6d340 error 14
@@ -390,10 +456,13 @@ vp = process(["./pwn", "./fifo"])
 with open("./fifo", "w") as f:
     f.write(payload)
 
+# forward stdin/stdout to process stdin/stdout
 vp.interactive()
   \end{lstlisting}
 \end{frame}
 
+
+{\setbeamercolor{background canvas}{bg=black}
 \begin{frame}
   \begin{center}
     \includegraphics[height=0.7\textheight]{./images/pwntools-exp.png}
@@ -405,6 +474,24 @@ vp.interactive()
   \begin{center}
     \includegraphics[width=\textwidth]{./images/pwntools-shellcraft.png}
   \end{center}
+\end{frame}
+}
+
+\begin{frame}
+  {pwntools/binjitsu}
+
+  \begin{itemize}
+    \item I/O abstraction (called Tubes)
+    \item ELF parser/info
+    \item Return Oriented Programming (ROP)
+    \item Shellcode
+      \begin{itemize}
+        \item plug'n'pwn
+        \item shellcode builder
+      \end{itemize}
+    \item Binary data ``parsing''
+    \item \ldots
+  \end{itemize}
 \end{frame}
 
 
@@ -453,11 +540,16 @@ vp.interactive()
 % sagemath - crypto all the things
 
 \begin{frame}
+
   \todo[inline]{crypto/sage fu. factorization? ecc?}
 \end{frame}
 
 % pen & paper - never underestimate
 
+\begin{frame}
+
+  \todo[inline]{something, something about pen \& paper}
+\end{frame}
 
 
 \begin{frame}
@@ -497,5 +589,16 @@ vp.interactive()
     \item \ldots
       \todo[inline]{who?}
   \end{itemize}
+
+  Detailed writeups:
+
+  {\footnotesize
+    \begin{itemize}
+      \item \href{https://losfuzzys.github.io/writeup/2016/04/04/ndhquals2016-secure-file-reader/}
+        {NDH quals 2016 secure file reader}
+      \item \href{https://losfuzzys.github.io/writeup/2016/04/04/ndhquals2016-matriochka/}
+        {NDH quals 2016 matriochka}
+    \end{itemize}
+  }
 
 \end{frame}
