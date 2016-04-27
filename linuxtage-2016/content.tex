@@ -198,11 +198,11 @@
 %  \end{enumerate}
 %\end{frame}
 
-{\usebackgroundtemplate{\includegraphics[height=\paperheight]{./images/automatealltheexploits.jpg}}
-\begin{frame}[plain]
+%{\usebackgroundtemplate{\includegraphics[height=\paperheight]{./images/automatealltheexploits.jpg}}
+%\begin{frame}[plain]
 
-  %{\Huge Automation}
-\end{frame}}
+%  %{\Huge Automation}
+%\end{frame}}
 
 \begin{frame}
   {Scripting is your best Friend}
@@ -214,12 +214,11 @@
         \item bash, zsh etc.
         \item Python, Ruby etc.
       \end{itemize}
-    \item Use interpreted languages!
   \end{itemize}
 
-  %\begin{center}
-  %  \includegraphics[height=0.5\textheight]{}
-  %\end{center}
+  \begin{center}
+    \includegraphics[height=0.5\textheight]{./images/automatealltheexploits.jpg}
+  \end{center}
 \end{frame}
 
 
@@ -326,7 +325,7 @@ r.recvline()
 {\usebackgroundtemplate{\includegraphics[height=\paperheight]{./images/zippy/bugs/buggybugs-23.jpg}}
 \begin{frame}[plain]
 
-  {\Huge Analysis}
+  {\huge Finding \& Analyzing Vulnerabilities}
 
   \vspace{16em}
 
@@ -369,16 +368,27 @@ r.recvline()
 \input{binary}
 
 
-\begin{frame}[plain]
+%\begin{frame}[plain]
 
-  {\Huge Cryptography}
-\end{frame}
+%  {\Huge Cryptography}
+%\end{frame}
 
 % sagemath - crypto all the things
 
 {
 \usebackgroundtemplate{\includegraphics[width=\paperwidth]{./images/zippy/cryptobugs/cryptobug10.jpg}}
 \begin{frame}[fragile,plain]
+
+  %\pgfsetfillopacity{0.5}
+  %\setbeamercolor{boxcolor}{fg=white,bg=black}
+  %\begin{beamercolorbox}[sep=1em,wd=\textwidth]{boxcolor}
+  %\pgfsetfillopacity{1}
+  %\end{beamercolorbox}
+
+  \vspace{19em}
+
+  \hspace*{\fill}{\Huge Cryptography}
+
 	%{Crypto? Sage, Pen and Paper to the rescue!}
 
 %  \pgfsetfillopacity{0.5}
@@ -414,11 +424,17 @@ r.recvline()
 
   \begin{itemize}
     \item Pen \& Paper
-    \item sage -- CAS, python, number theory
-    \item python packages, e.g.
+  \end{itemize}
+  \begin{itemize}
+    \item \texttt{\href{http://www.sagemath.org/}{sage}}
       \begin{itemize}
-        \item python-paddingoracle
-        \item hashpumpy (hash length extension attack)
+        \item CAS \& python
+      \end{itemize}
+    \item packages implementing attacks, e.g.
+      \begin{itemize}
+        \item \href{http://mwielgoszewski.github.io/python-paddingoracle/}
+          {python-paddingoracle}
+        \item \href{https://github.com/bwall/HashPump}{hashpumpy} (hash length extension attack)
         \item \ldots
       \end{itemize}
   \end{itemize}
@@ -486,17 +502,6 @@ r.recvline()
       \item realraum Graz
       \item \url{tuflowgraphy.at}
     \end{itemize}
-
-    %Detailed writeups:
-
-    %{\footnotesize
-    %  \begin{itemize}
-    %    \item \href{https://losfuzzys.github.io/writeup/2016/04/04/ndhquals2016-secure-file-reader/}
-    %      {NDH quals 2016 secure file reader}
-    %    \item \href{https://losfuzzys.github.io/writeup/2016/04/04/ndhquals2016-matriochka/}
-    %      {NDH quals 2016 matriochka}
-    %  \end{itemize}
-    %}
   \end{beamercolorbox}
 
 \end{frame}
