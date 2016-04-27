@@ -324,11 +324,31 @@ pwn: ELF 32-bit LSB executable, Intel 80386,
 \end{frame}
 }
 
+
+{\setbeamercolor{background canvas}{bg=red}
 \begin{frame}[plain]
   \begin{center}
-    {\Huge \texttt{radare2}}
+    \href{http://radare.org}{\includegraphics[height=3em]{./images/r2logo.pdf}}\\
+    \Huge\textbf{\textcolor{white}{%
+      Keep Calm \\
+      And \\
+    Use \texttt{radare2} \\
+    \textsc{From }\texttt{git}}}
   \end{center}
+
+  \note{
+    \begin{itemize}
+      \item Hex Editor
+      \item Disassembler/Assembler
+      \item Debugger
+      \item Code emulation
+      \item Binary Diffing
+      \item Scriptable
+      \item \ldots
+    \end{itemize}
+  }
 \end{frame}
+}
 
 {\setbeamercolor{background canvas}{bg=black}
 \begin{frame}[plain]
@@ -348,38 +368,49 @@ pwn: ELF 32-bit LSB executable, Intel 80386,
     \includegraphics[width=\textwidth]{./images/radare-disas2.png}
   \end{center}
 \end{frame}
-}
 
-\begin{frame}
-
-  \todo[inline]{Add radare afl, izz and stuff}
-\end{frame}
-
-\begin{frame}
-  {radare2 -- reverse engineering toolkit}
-
-  \begin{itemize}
-    \item Hex Editor
-    \item Disassembler/Assembler
-    \item Debugger
-    \item Code emulation
-    \item Binary Diffing
-    \item \ldots
-  \end{itemize}
-\end{frame}
-
-{\setbeamercolor{background canvas}{bg=red}
 \begin{frame}[plain]
   \begin{center}
-    \includegraphics[height=3em]{./images/r2logo.pdf}\\
-    \Huge\textbf{\textcolor{white}{%
-      Keep Calm \\
-      And \\
-    Use \texttt{r2} \\
-    \textsc{From }\texttt{git}}}
+    \color{white} \texttt{objdump} and C++ symbols
+
+    \vspace{2em}
+
+    \includegraphics[width=\textwidth]{./images/objdump-cpp.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}[plain,fragile]
+  \begin{center}
+    \color{white} \verb+e asm.demangle=true+
+
+    \vspace{2em}
+
+    \includegraphics[width=\textwidth]{./images/r2-cpp.png}
   \end{center}
 \end{frame}
 }
+
+\begin{frame}[fragile]
+  {radare2 -- example commands}
+
+  \begin{itemize}
+    \item Search for functions containing \verb+"exec"+ \\
+      \begin{center}
+        \verb!afl~exec!
+      \end{center}
+    \item Show/search all strings in the file \\
+      \begin{center}
+        \texttt{izz} \\
+        \verb!izz~FLAG!
+      \end{center}
+    \item Compute \texttt{CRC32} over next 32 byte \\
+      \begin{center}
+        \verb+#crc32 32+
+      \end{center}
+  \end{itemize}
+
+\end{frame}
+
 % gdb - pretty horrible
 
 \begin{frame}[plain]
@@ -457,7 +488,6 @@ pwn[9391]: segfault at 41414141 ip 0000000041414141
 
   \begin{lstlisting}[language=python]
 from pwn import *  # NOQA
-import subprocess
 
 velf = ELF("./pwn")
 r = ROP(velf)
@@ -466,7 +496,7 @@ payload = "A" * 4124 + str(r)
 
 # launch process
 vp = process(["./pwn", "./fifo"])
-# gdb.attach(vp)
+gdb.attach(vp)
 # break *0x8048f4e
 
 with open("./fifo", "w") as f:
@@ -516,9 +546,9 @@ vp.interactive()
 
   \begin{itemize}
     \item No really good open source binary decompilers \verb+:(+
-      %\begin{itemize}
-        %\item \href{https://github.com/zneak/fcd}{fcd} gives
-      %\end{itemize}
+      \begin{itemize}
+        \item The radare guys are working on one
+      \end{itemize}
     \item Commercial/Closed-Source
       \begin{itemize}
         \item Hex-Rays/IDA Pro Decompiler (\$\$\$)
@@ -562,11 +592,11 @@ vp.interactive()
   \begin{lstlisting}[language=python]
 	n1 = 0xD564B978F9D233504958EED8B744373281ED1418B29F1ECFA8093D8CF
 	...
-	
+
 	factors1 = factor(n1)
 	p1 = list(factors1)[0][0]
 	q1 = list(factors1)[1][0]
-	
+
 	e = 65537
 	c1 = 0x0caf5db76313c9b32a473fcdd9150cab6a9abafa8520e9d0f3d98b8d76
 	...
