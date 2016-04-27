@@ -555,9 +555,30 @@ vp.interactive()
 
 % sagemath - crypto all the things
 
-\begin{frame}
+\begin{frame}[fragile]
+	{Crypto? Sage to the rescue!}
 
-  \todo[inline]{crypto/sage fu. factorization? ecc?}
+  % TODO: send email or something
+  \begin{lstlisting}[language=python]
+	n1 = 0xD564B978F9D233504958EED8B744373281ED1418B29F1ECFA8093D8CF
+	...
+	
+	factors1 = factor(n1)
+	p1 = list(factors1)[0][0]
+	q1 = list(factors1)[1][0]
+	
+	e = 65537
+	c1 = 0x0caf5db76313c9b32a473fcdd9150cab6a9abafa8520e9d0f3d98b8d76
+	...
+	phi1 = (p1 - 1) * (q1 -1)
+	...
+	bezout1 = xgcd(e, phi1)
+	...
+	d1 = Integer(mod(bezout1[1], phi1))
+	...
+	m1 = power_mod(c1,d1,n1)
+	...
+  \end{lstlisting}
 \end{frame}
 
 % pen & paper - never underestimate
