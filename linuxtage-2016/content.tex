@@ -596,38 +596,45 @@ vp.interactive()
 
 % sagemath - crypto all the things
 
+{
+\usebackgroundtemplate{\includegraphics[width=\paperwidth]{./images/zippy/cryptobugs/cryptobug10.jpg}}
 \begin{frame}[fragile]
-	{Crypto? Sage to the rescue!}
+	{Crypto? Sage, Pen and Paper to the rescue!}
 
-  % TODO: send email or something
-  \begin{lstlisting}[language=python]
-	n1 = 0xD564B978F9D233504958EED8B744373281ED1418B29F1ECFA8093D8CF
-	...
-
-	factors1 = factor(n1)
-	p1 = list(factors1)[0][0]
-	q1 = list(factors1)[1][0]
-
-	e = 65537
-	c1 = 0x0caf5db76313c9b32a473fcdd9150cab6a9abafa8520e9d0f3d98b8d76
-	...
-	phi1 = (p1 - 1) * (q1 -1)
-	...
-	bezout1 = xgcd(e, phi1)
-	...
-	d1 = Integer(mod(bezout1[1], phi1))
-	...
-	m1 = power_mod(c1,d1,n1)
-	...
-  \end{lstlisting}
+%  \pgfsetfillopacity{0.5}
+%  \setbeamercolor{boxcolor}{fg=white,bg=black}
+%  \begin{beamercolorbox}[sep=0.5em,wd=10cm]{boxcolor}
+%  	\pgfsetfillopacity{1}
+%	  \begin{lstlisting}[language=python]
+%		n1 = 0xD564B978F9D233504958EED8B7 ... 
+%		...
+%	
+%		factors1 = factor(n1)
+%		p1 = list(factors1)[0][0]
+%		q1 = list(factors1)[1][0]
+%	
+%		e = 65537
+%		c1 = 0x0caf5db76313c9b32a473fcdd91 ...
+%		...
+%		phi1 = (p1 - 1) * (q1 -1)
+%		...
+%		bezout1 = xgcd(e, phi1)
+%		...
+%		d1 = Integer(mod(bezout1[1], phi1))
+%		...
+%		m1 = power_mod(c1,d1,n1)
+%		...
+%	  \end{lstlisting}
+%	\end{beamercolorbox}
 \end{frame}
+}
 
 % pen & paper - never underestimate
 
-\begin{frame}
-
-  \todo[inline]{something, something about pen \& paper}
-\end{frame}
+%\begin{frame}
+%
+%  \todo[inline]{something, something about pen \& paper}
+%\end{frame}
 
 
 \begin{frame}
