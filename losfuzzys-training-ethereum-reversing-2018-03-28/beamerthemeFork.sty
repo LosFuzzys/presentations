@@ -1,0 +1,51 @@
+% set font
+%\renewcommand{\familydefault}{\ttdefault}
+
+\usefonttheme[stillsansseriftext,stillsansserifsmall]{serif}
+
+\mode<presentation>{
+\DeclareOptionBeamer{alternativetitlepage}[true]{\PassOptionsToPackage{alternativetitlepage=#1}{beamerinnerthemefancy}}
+\DeclareOptionBeamer{titlepagelogo}{\PassOptionsToPackage{titlepagelogo=#1}{beamerinnerthemefancy}}
+\DeclareOptionBeamer{bullet}{\PassOptionsToPackage{bullet=#1}{beamerinnerthemefancy}}
+\DeclareOptionBeamer{pageofpages}{\PassOptionsToPackage{pageofpages=#1}{beamerouterthemedecolines}}
+\DeclareOptionBeamer{titleline}[true]{\PassOptionsToPackage{titleline=#1}{beamerouterthemedecolines}}
+
+\ProcessOptionsBeamer
+
+% beamer themes
+\useoutertheme{decolines}
+\useinnertheme{fancy}
+\usecolortheme{forkgray}
+
+% remove navigation symbols
+\setbeamertemplate{navigation symbols}{}
+
+%\setbeamertemplate{frametitle continuation}[from second][(cont'd)]
+
+\setbeamerfont{structure}{series=\bfseries}
+
+
+\AtBeginSection
+{
+    \begin{frame}
+        \frametitle{Agenda}
+        \tableofcontents[currentsection]
+    \end{frame}
+}}%what? why two?
+
+\AtBeginSubsection
+{
+   \begin{frame}
+       \frametitle{Agenda}
+       \tableofcontents[currentsection,currentsubsection]
+   \end{frame}
+}
+
+
+\mode
+<all>
+
+% new command emphc
+\newcommand{\emphc}[1]{\textcolor{structure.fg}{#1}}
+% alias emph to emphc
+\let\emph\emphc

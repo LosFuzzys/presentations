@@ -1,0 +1,179 @@
+
+% document class is handled in inputting file
+% document class
+%\documentclass{beamer}
+% Transparency mode (no overlays)
+%\documentclass[xcolor={x11names,svgnames,dvipsnames},trans]{beamer}
+% 4-up handout mode
+%\documentclass[xcolor={x11names,svgnames,dvipsnames},handout]{beamer}
+
+% nicer fonts
+\usepackage[T1]{fontenc}
+% utf8 input encoding
+\usepackage[utf8]{inputenc}
+% use babel package for language stuff
+\usepackage{babel}
+% include pictures
+\usepackage{graphicx}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning,matrix,chains,backgrounds,fit}
+\usetikzlibrary{shapes,arrows,positioning,shapes.multipart}
+%\usepackage{tikzscale}
+
+\usepackage{tabularx}
+
+\usepackage{wasysym}
+
+
+\usepackage{booktabs}
+
+\usepackage{siunitx}
+\sisetup{%
+    binary-units=true,
+    per-mode=symbol,
+}
+\newcommand{\kb}[1]{\SI{#1}{\kilo\byte}}
+
+
+%%%%% beamer theme  %%%%%
+
+\usetheme[alternativetitlepage=true]{Fork}
+%\usecolortheme{forkdarkgreen}
+%\usecolortheme{forkdarkred}
+%\usecolortheme{forkdarkviol}
+
+%%%%% custom packages  %%%%%
+
+\definecolor{cadmiumgreen}{rgb}{0.0, 0.42, 0.24}
+\usepackage{listings}
+\usepackage{beramono}
+
+\lstset{
+language=C,
+basicstyle=\footnotesize\ttfamily,
+commentstyle=\color{cadmiumgreen},
+keywordstyle=\color{blue},
+emphstyle=\bfseries\color{black!73},
+stringstyle=\color{RedViolet},
+numbers=left,
+numberstyle=\small,
+%columns=fullflexible,
+showstringspaces=false,
+captionpos=b,
+xleftmargin=\parindent,
+frame=L
+%fancyvrb=true,
+}
+
+\lstdefinelanguage
+   [x64]{Assembler}     % add a "x64" dialect of Assembler
+   [x86masm]{Assembler} % based on the "x86masm" dialect
+   % with these extra keywords:
+   {morekeywords={CDQE,CQO,CMPSQ,CMPXCHG16B,JRCXZ,LODSQ,MOVSXD, %
+                  POPFQ,PUSHFQ,SCASQ,STOSQ,IRETQ,RDTSCP,SWAPGS}, %
+    moreemph={rax,rdx,rcx,rbx,rsi,rdi,rsp,rbp, %
+              r8,r8d,r8w,r8b,r9,r9d,r9w,r9b,
+              eax, ebx, ecx, edx, al, bl, dl, cl},
+    morecomment=[l]{//},
+    }
+
+
+\makeatletter
+\newenvironment{btHighlight}[1][]
+{\begingroup\tikzset{bt@Highlight@par/.style={#1}}\begin{lrbox}{\@tempboxa}}
+{\end{lrbox}\bt@HL@box[bt@Highlight@par]{\@tempboxa}\endgroup}
+
+\newcommand\btHL[1][]{%
+  \begin{btHighlight}[#1]\bgroup\aftergroup\bt@HL@endenv%
+}
+\def\bt@HL@endenv{%
+  \end{btHighlight}%
+  \egroup
+}
+\newcommand{\bt@HL@box}[2][]{%
+  \tikz[#1]{%
+    \pgfpathrectangle{\pgfpoint{1pt}{0pt}}{\pgfpoint{\wd #2}{\ht #2}}%
+    \pgfusepath{use as bounding box}%
+    \node[anchor=base west, fill=orange!30,outer sep=0pt,inner xsep=1pt, inner ysep=0pt, rounded corners=3pt, minimum height=\ht\strutbox+1pt,#1]{\raisebox{1pt}{\strut}\strut\usebox{#2}};
+  }%
+}
+\makeatother
+
+\lstdefinestyle{highlight}{
+    basicstyle=\ttfamily,
+    moredelim=**[is][\btHL]{`}{`},
+    moredelim=**[is][{\btHL[fill=green!30,]}]{@}{@},
+    moredelim=**[is][{\btHL[fill=red!30,]}]{!}{!},
+}
+
+
+\lstdefinestyle{highc}{
+  language=C,
+  moredelim=**[is][\btHL]{`}{`},
+  moredelim=**[is][{\btHL[fill=green!30,]}]{@}{@},
+  moredelim=**[is][{\btHL[fill=red!30,]}]{!}{!},
+}
+
+\lstdefinestyle{plainc}{
+  numbers=none,
+  frame=none,
+  language=C
+}
+
+\lstdefinestyle{asm}{
+  numbers=none,
+  frame=none,
+  language=[x64]Assembler,
+  moredelim=**[is][\btHL]{`}{`},
+  moredelim=**[is][{\btHL[fill=green!30,]}]{@}{@},
+  moredelim=**[is][{\btHL[fill=red!30,]}]{!}{!},
+}
+
+\lstdefinestyle{plain}{
+  numbers=none,
+  frame=none,
+}
+
+
+%%%%% stuff  %%%%%
+
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+
+% \makeatother % makes @ to normal letter
+
+
+\usepackage[backend=biber]{biblatex}
+%\bibliographystyle{plain}
+%\bibliography{references}
+%\addbibresource{~/thesis/library/refs.bib}
+
+
+%%%%% title etc.  %%%%%
+
+\author{\href{https://twitter.com/f0rki}{@f0rki}}
+\title{Reversing Ethereum Smart Contracts}
+%\subtitle{Navigating the Exploit Mitigation Jungle}
+\date{2018-03-28}
+%\institute{Technische Universität Graz, IAIK}
+
+\begin{document}
+
+\begin{frame}[t,plain]
+    \titlepage
+\end{frame}
+
+\input{content}
+
+%\begin{frame}[t,allowframebreaks]
+%    \frametitle{References}
+%    {\footnotesize
+%        %\bibliographystyle{ieeetr}
+%        %\bibliography{references}
+%        % heading=none is essential here otherwise it breaks biblatex
+%        \printbibliography[heading=none]
+%    }
+%\end{frame}
+
+\end{document}

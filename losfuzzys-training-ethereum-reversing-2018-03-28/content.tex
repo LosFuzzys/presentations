@@ -1,0 +1,185 @@
+%! TEX root = ./presentation.tex
+
+\begin{frame}
+  {WTF? Ethereum?}
+
+  \begin{itemize}
+    \item Cryptocurrency
+    \item PoW blockchain (Nakamoto consesus)
+      \begin{itemize}
+        \item Work on Proof-of-Stake
+      \end{itemize}
+    \item \textbf{Smart Contracts} on the blockchain
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  {The Ethereum Blockchain}
+
+  \begin{itemize}
+    \item Actually: one huge distributed computer
+    \item Consesus protocol to fix one state of the computer
+    \item Smart contracts
+      \begin{itemize}
+        \item A program on the ethereum computer
+        \item Can modify the state of the blockchain
+        \item Interactions between contracts
+      \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  {EVM Internals}
+
+  \begin{itemize}
+    \item Specification \href{http://gavwood.com/Paper.pdf}{"Yellow Paper"}
+    \item Opcode Info
+      \href{https://github.com/trailofbits/evm-opcodes}{trailofbits/evm-opcodes}
+    \item Existing ethereum implementations \\
+      \href{https://github.com/ethereum/go-ethereum/blob/master/core/vm/instructions.go}{go-ethereum/core/vm/instructions.go}
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}[allowframebreaks,fragile]
+  {Ethereum Virtual Machine}
+
+  \begin{itemize}
+    \item A bit weird...
+  \end{itemize}
+
+  \begin{itemize}
+    \item Turing-complete
+    \item Stack-machine
+    \item 1-byte opcodes
+    \item "Gas" limits resources
+      \begin{itemize}
+        \item Number of executed instructions
+        \item Used memory
+      \end{itemize}
+  \end{itemize}
+
+\framebreak
+
+Add 2 numbers:
+
+\begin{lstlisting}[frame=single]
+                         // stack: []
+6001   | PUSH1 0x1       // stack: [0x1]
+614242 | PUSH2 0x4242    // stack: [0x1, 0x4242]
+01     | ADD             // stack: [0x4243]
+\end{lstlisting}
+
+\framebreak
+
+  \begin{itemize}
+    \item Harvard-architecture
+    \item Separate address spaces for
+      \begin{itemize}
+        \item Code (\texttt{JUMP} / \texttt{JUMPI} / \texttt{PC})
+        \item Stack (\texttt{PUSH} / \texttt{POP})
+        \item Memory (\texttt{MLOAD} / \texttt{MSTORE})
+        \item Storage (\texttt{SLOAD} / \texttt{SSTORE})
+      \end{itemize}
+    \item Storage is persistent state
+  \end{itemize}
+
+\framebreak
+
+  \begin{itemize}
+    \item A \texttt{CALL} triggers a transaction
+      \begin{itemize}
+        \item Usually to another contract
+        \item A little bit like RPC
+        \item $\rightarrow$ new stack, memory areas
+      \end{itemize}
+    \item Transactions can be rolled back, by
+      \begin{itemize}
+        \item Out-of-gas exception
+        \item \texttt{INVALID}, \texttt{REVERT}
+      \end{itemize}
+  \end{itemize}
+
+\framebreak
+
+  \begin{itemize}
+    \item Code starts at address $0$
+    \item There is only one function
+    \item Solidity introduced dispatcher
+      \begin{itemize}
+        \item First 4 bytes of input are magic value
+        \item Dispatcher jump to different "functions"
+        \item Huge if-else on magic values
+      \end{itemize}
+    \item Solidity ABI definitions are metadata for "functions"
+      \begin{itemize}
+        \item Parameter types
+        \item Method name
+        \item Modifiers (such as \texttt{payable})
+      \end{itemize}
+
+  \end{itemize}
+
+%\framebreak
+
+%  \begin{itemize}
+%    \item
+%  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  {EVM Contract Creation}
+
+  \begin{itemize}
+    \item Transaction to address $0$
+      \begin{itemize}
+        \item Contract code
+        \item Constructor parameters
+      \end{itemize}
+    \item Calls constructor
+    \item Return value is "runtime" code
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}
+  {Reversing Tools}
+
+  \begin{itemize}
+    \item IDA with
+      \href{https://github.com/trailofbits/ida-evm}{github.com/trailofbits/ida-evm}
+    \item binary.ninja with
+      \href{https://github.com/trailofbits/ethersplay}{github.com/trailofbits/ethersplay}
+    \item radare2 with evm plugin
+      \begin{itemize}
+        \item \texttt{r2pm install evm}
+      \end{itemize}
+    \item \href{https://github.com/Arachnid/evmdis/}{github.com/Arachnid/evmdis}
+      (standalone)
+      \begin{itemize}
+        \item \texttt{go get Arachnid/evmdis}
+      \end{itemize}
+  \end{itemize}
+
+  \begin{itemize}
+    \item Symbolic execution tools:
+      \begin{itemize}
+        \item \href{https://github.com/trailofbits/manticore}{github.com/trailofbits/manticore}
+        \item \href{https://github.com/melonproject/oyente}{github.com/melonproject/oyente}
+        \item \href{https://github.com/ConsenSys/mythril}{github.com/ConsenSys/mythril}
+      \end{itemize}
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}
+
+  \begin{center}
+    {\Huge Challenge Time!
+
+  \texttt{smarties} on \href{https://fuzzy.land}{fuzzy.land}}
+
+  %\texttt{αἰθήρ} on \href{https://fuzzy.land}{fuzzy.land}
+  \end{center}
+
+\end{frame}
