@@ -3,6 +3,9 @@
 \usetheme{metropolis}
 \usepackage{appendixnumberbeamer}
 
+% Notes for pdfpc
+\usepackage{pdfpc}
+
 \usepackage{booktabs}
 \usepackage[scale=2]{ccicons}
 
@@ -12,7 +15,35 @@
 \usepackage{xspace}
 \newcommand{\themename}{\textbf{\textsc{metropolis}}\xspace}
 
+%%% Frameheader with Image
+\makeatletter
+\setbeamertemplate{frametitle}{%
+    \nointerlineskip%
+    \begin{beamercolorbox}[%
+        wd=\paperwidth,%
+        sep=0pt,%
+        leftskip=\metropolis@frametitle@padding,%
+        rightskip=\metropolis@frametitle@padding,%
+    ]{frametitle}%
+    \metropolis@frametitlestrut@start%
+    \insertframetitle%
+    \nolinebreak%
+    \metropolis@frametitlestrut@end%
+    \hfill
+    \raisebox{-1.2ex}{
+        \includegraphics[height=4ex,keepaspectratio]{images/logos/losfuzzys_logo.png}
+    }
+  \end{beamercolorbox}%
+}
+\makeatother
 
+%%% Titlepage with LOGO
+\titlegraphic{%
+  \hfill
+  \includegraphics[width=6cm,height=1.6cm,keepaspectratio]{images/logos/losfuzzys_logo.png}
+  \hfill
+
+}
 
 \title{Introduction to CTFs}
 \subtitle{What are CTFs and how to get started}
@@ -38,22 +69,26 @@
         \begin{tabular}{l}
             \parbox{0.6\linewidth}{%  change the parbox width as appropiate
                 \begin{itemize}
-                    \item ~15 active Member
-                    \item Meet every Wednesday 18:15
-                    \item Regular compeeting in security copmetitions
-                    \item Host CTFs, trainings and workshops
+                    \item $\sim$ 15 active Member
+                    \item Meet every Wednesday 18:15 (Infeldgasse 16a, ground floor)
+                    \item Regular compeeting in security copmetitions, host CTFs, trainings and workshops
                 \end{itemize}
+                \begin{figure}
+                    \includegraphics[trim=1cm 1cm 1cm 1cm,clip=true,width=0.5\linewidth]{images/qrcode.png}
+                \end{figure}
             }
         \end{tabular}  &
         \begin{tabular}{c}
             \begin{figure}
-                \includegraphics[width=0.45\linewidth,]{images/events/Beginnertrainings2022.jpg}
+                \includegraphics[width=0.45\linewidth]{images/events/Beginnertrainings2022.jpg}
             \end{figure} \\
             \begin{figure}
                 \includegraphics[width=0.45\linewidth]{images/events/kdctf.JPG}
             \end{figure}
         \end{tabular}
     \end{tabular}
+
+    \pdfpcnote{Small group of people that reguarly compeet in CTFs. Events and trainings: fuzzy.land, KaindorfCTF, Beginnertrainings 2022}
 \end{frame}
 
 \begin{frame}{Overview}
@@ -73,6 +108,7 @@
 
 \begin{frame}{Flag?}
     \huge{LosCTF\{this\_could\_be\_a\_flag\}}
+    \pdfpcnote{Praefix typically gives a hint about the CTF, curly braces, flagbody}
 \end{frame}
 
 
@@ -80,6 +116,7 @@
 \begin{frame}{ctftime.org}
     \centering
     \includegraphics[width=0.8\columnwidth]{images/CTFTimeStartpage.png}
+    \pdfpcnote{Overview of currently and upcomming competition, global ranking,}
 \end{frame}
 
 
@@ -108,10 +145,12 @@
     \only<1>{
         \centering
         \includegraphics[width=0.95\columnwidth]{images/jeopardy_ctfs/fuzzy_land_1.png}
+        \pdfpcnote{Different challenges grouped in categories; Grey = unsolved, green = solved}
     }%
     \only<2>{
         \centering
         \includegraphics[width=0.95\columnwidth]{images/jeopardy_ctfs/fuzzy_land_2.png}
+        \pdfpcnote{Every Challenge has a Name, Points, Number of solves and a description}
     }%
     \only<3>{
         \centering
@@ -120,6 +159,7 @@
     \only<4>{
         \centering
         \includegraphics[width=0.95\columnwidth]{images/jeopardy_ctfs/fuzzy_land_4.png}
+        \pdfpcnote{Submitting a valid flag markes the challenge as solved}
     }%
 
 \end{frame}
@@ -140,6 +180,10 @@
         \item Binary exploitation
         \item Websecurity
     \end{itemize}
+    \pdfpcnote{
+        Find the vulnerbilities in the own service, patch them and write exploits.
+        Analyse network traffic in order to possiblie steam exploits from other teams
+    }
 \end{frame}
 
 \begin{frame}{How do AD-CTFs work?}
@@ -147,22 +191,27 @@
     \only<1>{
         \centering
         \includegraphics[width=0.95\columnwidth]{images/ad_ctfs/ad_overview_1.png}
+        \pdfpcnote{Teams get a serverimage with servies or the vulnbox is alrady provided}
     }%
     \only<2>{
         \centering
         \includegraphics[width=0.95\columnwidth]{images/ad_ctfs/ad_overview_2.png}
+        \pdfpcnote{Every team shuld have this set up (if the vulnbox is not provided); 4 different teams competing in this case}
     }%
     \only<3>{
         \centering
         \includegraphics[width=0.95\columnwidth]{images/ad_ctfs/ad_overview_3.png}
+        \pdfpcnote{Once the ctf startes, the teams connect to ga gamenetwork; tipically there is a 1 houre grace periode where teams can connect to the network but can not reach each other}
     }%
     \only<4>{
         \centering
         \includegraphics[width=0.95\columnwidth]{images/ad_ctfs/ad_overview_4.png}
+        \pdfpcnote{Once the ctf starts, a gameserver distributes flags that are different for reach team and evry service.}
     }%
     \only<5>{
         \centering
         \includegraphics[width=0.95\columnwidth]{images/ad_ctfs/ad_overview_5.png}
+        \pdfpcnote{In this case losfuzzys was able to attack two out of four services and gather the flags from every team}
     }%
 
 \end{frame}
@@ -180,7 +229,7 @@
         \item Superior roman cipher (Cryptographie)
         \item Network Rookie (Websecurity, Forensics)
     \end{itemize}
-    We have Linux\-USB Sticks
+    We have Linux USB Sticks
 
 \end{frame}
 
