@@ -1,0 +1,1 @@
+PS1="LosCTF{1_th1nk_I_4m_r00t_n0w} >"
