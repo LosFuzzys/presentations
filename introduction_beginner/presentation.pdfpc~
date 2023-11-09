@@ -1,0 +1,25 @@
+[notes]
+### 2
+Small group of people that reguarly compeet in CTFs. Events and trainings: fuzzy.land, KaindorfCTF, Beginnertrainings 2022
+### 4
+Präfix typically gives a hint about the CTF, curly braces, flagbody
+### 5
+Overview of currently and upcomming competition, global ranking,
+### 7
+Different challenges grouped in categories; Grey = unsolved, green = solved
+### 7
+Every Challenge has a Name, Points, Number of solves and a description
+### 7
+Submitting a valid flg markes the challenge as solved
+### 8
+ Find the vulnerbilities in the own service, patch them and write exploits. Analyse network traffic in order to possiblie steam exploits from other teams 
+### 9
+Teams get a serverimage with servies or the vulnbox is alrady provided
+### 9
+Every team shuld have this set up (if the vulnbox is not provided); 4 different teams competing in this case
+### 9
+Once the ctf startes, the teams connect to ga gamenetwork; tipically there is a 1 houre grace periode where teams can connect to the network but can not reach each other
+### 9
+Once the ctf starts, a gameserver distributes flags that are different for reach team and evry service.
+### 9
+In this case losfuzzys was able to attack two out of four services and gather the flags from every team
